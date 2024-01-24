@@ -19,9 +19,31 @@ public class AppHandler extends ApplicationAdapter {
 	//TextureRegion subImg;
 
 	int x, y;
-	
+
+	int[][] worldIntArray = {{4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+							{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0}};
+
+
 	@Override
-	public void create () {
+	public void create() {
 		batch = new SpriteBatch();
 
 		//delete me
@@ -37,16 +59,21 @@ public class AppHandler extends ApplicationAdapter {
 		ScreenUtils.clear(1, 0, 0, 1);
 		batch.begin();
 
+		for(int r = 0; r < worldIntArray.length; r++) {
+			for(int c = 0; c < worldIntArray[r].length; c++){
+				batch.draw(TileHandler.getTileHandler().getWorldTileArray().get(worldIntArray[r][c]).getTexture(), c* Tile.ON_SCREEN_DEFAULT_WIDTH, Gdx.graphics.getHeight() - Tile.ON_SCREEN_DEFAULT_HEIGHT - (r*Tile.ON_SCREEN_DEFAULT_HEIGHT));
+			}
+		}
+		/*
 		for(int r = 0; r < Gdx.graphics.getHeight(); r+=64) {
 			for(int c = 0; c < Gdx.graphics.getWidth(); c+=64) {
-				batch.draw(TileHandler.getTileHandler().getWorldTileArray().get(x++).getTexture(), c, r);
+				batch.draw(TileHandler.getTileHandler().getWorldTileArray().get(MathUtils.random(4)).getTexture(), c, r);
 				if(x > 4) {
 					x = 0;
 				}
 			}
 		}
-
-
+		*/
 
 		batch.end();
 
@@ -54,47 +81,43 @@ public class AppHandler extends ApplicationAdapter {
 	}
 
 	public void checkInput() {
-		/*
-		if(Gdx.input.isKeyJustPressed(Input.Keys.W)) {
-			y += 10;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
-			x -= 10;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.S)) {
-			y -= 10;
-		}
-		if(Gdx.input.isKeyJustPressed(Input.Keys.D)) {
-			x += 10;
-		}
+
+      /*
+      if(Gdx.input.isKeyJustPressed(Input.Keys.W)) {
+         y += 10;
+      }
+      else if(Gdx.input.isKeyJustPressed(Input.Keys.S)) {
+         y -= 10;
+      }
+      else if(Gdx.input.isKeyJustPressed(Input.Keys.A)) {
+         x -= 10;
+      }
+      else if(Gdx.input.isKeyJustPressed(Input.Keys.D)) {
+         x += 10;
+      }
 
 
+      System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
 
-		System.out.println(Gdx.input.getX() + " " + Gdx.input.getY());
-
-		x = Gdx.input.getX() - img.getWidth()/2;
-		y = Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight()/2;
-
+      x = Gdx.input.getX() - img.getWidth()/2;
+      y = Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight()/2;
 
 
-		if(x < (Gdx.input.getX() - img.getWidth()/2)) {
-			x += 20;
-		}
-		if(x > (Gdx.input.getX() - img.getWidth()/2)) {
-			x -= 20;
-		}
-		if(y > (Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight()/2)) {
-			y -= 20;
-		}
-		if(y < (Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight()/2)) {
-			y += 20;
-		}
+      if(x < (Gdx.input.getX() - img.getWidth()/2)) {
+         x += 5;
+      }
+      if(x > (Gdx.input.getX() - img.getWidth()/2)) {
+         x -= 5;
+      }
+      if(y < (Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight()/2)) {
+         y += 5;
+      }
+      if(y > (Gdx.graphics.getHeight() - Gdx.input.getY() - img.getHeight()/2)) {
+         y -= 5;
+      }
 */
-
-
-
 	}
-	
+
 	@Override
 	public void dispose () {
 		batch.dispose();
